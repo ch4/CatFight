@@ -5,12 +5,21 @@
   <title>CatFight!</title>
   <meta name="description" content="My Parse App">
   <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
+<!--     <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css"> -->
+
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  
 <script type="text/javascript">
   Parse.initialize("3tHHUyxjtuSEiHranjliYJkJ36fEO89Ql77L2jng", "nY2YCI6Jn6ikyBWrjOxf3zj5bc8aPL5gvIUgGC5C");
 </script>
@@ -20,7 +29,7 @@
   <div id="fb-root"></div>
 <script>
 	if(Parse.User.current()) {
-		$('#loginBtn').css("display", "none");
+		$('#loginBtn').hide();
 	} 
 
   window.fbAsyncInit = function() {
@@ -98,7 +107,7 @@
 	<button id="profileBtn" onclick="window.location.href='profile.html'">Profile</button>
 	<button id="loginBtn" onclick="loginToFBThroughParse()">Login</button>
 	<br>
-	<div id="imageDiv"><img style="display:block;width:50%" id="currentImage"><p style="display:none" id="currentImageId"/></div>
+	<div id="imageDiv" style="display:block;width:50%"><img id="currentImage"><p style="display:none" id="currentImageId"/></div>
     <button onclick="getPic()">GetPic</button>
 	<button onclick="ratePic('up')">Upvote</button>
 	<button onclick="ratePic('down')">Downvote</button>
