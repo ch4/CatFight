@@ -88,18 +88,16 @@ error: function() { alert("No User found!");}
 	  });
 	}
   function dispLeaders(sorted, length) {
-	for (var i=0; i<length; i++) {
-	  if (i>=sorted.length) break;
-	  var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
-	$("table").append(entry); 
-	}
 	var currUser = Parse.User.current().get("username");
 	for (var i=0; i<sorted.length; i++) {
 	  if (sorted[i].username == currUser) {
-	  var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
-	$("table").append(entry); 
-	}
-	}
+	    var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
+	    $("table").append(entry); 
+	  } else if (i<length) {
+	    var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
+	    $("table").append(entry); 
+      }
+	} 
   }
 window.onload=function() {getLeaders(5);};
   </script>
