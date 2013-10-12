@@ -39,52 +39,26 @@
 
   <script type="text/javascript">
 	function getLeaders(length) {
+		var currentUser = Parse.User.current();
+		Parse.Cloud.run('getFriends', {userId:currentUser.id}, {
+		  success: function(result) {
+		  },
+		  error: function(error) {
+		  }
+		});
       var User = Parse.Object.extend("User");
       var userQuery = new Parse.Query(User);
 	  userQuery.find({
 success: function(users) {
-  var usernames = {};
+  var userRanks = [];
   for (var k=0;k<users.length;k++) {
     if (users[k].get("displayName") === undefined) continue;
-    usernames[users[k].id] = users[k].get("displayName");
+	userRanks.push({'displayName':users[k].get("displayName"),'elo':users[k].get("elo")});
   }
-  console.log(usernames);
-      var Pictures = Parse.Object.extend("Pictures");
-      var picQuery = new Parse.Query(Pictures);
-	  picQuery.find({
-        success: function(pics) {
-	      var ratings = {};
-	      var counts = {};
-	      for (var j=0; j<pics.length; j++) {
-	        var pic = pics[j];
-			var user = pic.get("owner");
-			if (user === null) continue;
-			var name = usernames[user.id];
-			if (ratings[name] === undefined) {
-	    	  ratings[name] = pic.get("rating")/pic.get("totalViews");
-			  counts[name] = 1;
-			} else { 
-	    	  ratings[name] += pic.get("rating")/pic.get("totalViews");
-			  counts[name] += 1;
-			}
-	      }
-	  	  var sorted = [];
-	  	  for (var key in ratings) {
-		    //if (counts[name] != 3) {
-		    //  alert("Pictures number != 3!");
-		    //  continue;
-		    //}
-		    var score = ratings[key]/counts[name];
-		    sorted.push({'displayName':key, 'score':score });
-	  	  }
-	  	  sorted.sort(function(a,b) { return b.score-a.score;});
-	  	  dispLeaders(sorted,length);
-	    },
-        error: function() {
-				 alert("No Picture found!");
-	    }
-	  });
-		 },
+  console.log(userRanks);
+  userRanks.sort(function(a,b) { return b.elo-a.elo;});
+  dispLeaders(userRanks,length);
+},
 error: function() { alert("No User found!");}
 	  });
 	}
@@ -94,10 +68,10 @@ error: function() { alert("No User found!");}
 	  console.log(sorted[i].displayName);
 	  if (sorted[i].displayName === undefined) continue;
 	  if (sorted[i].displayName == currUser) {
-	    var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].displayName + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
+	    var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].displayName + "</a></p></td><td><p>" + sorted[i].elo +"</p></td></tr>";
 	    $("table").append(entry); 
 	  } else if (i<length) {
-	    var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].displayName + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
+	    var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].displayName + "</a></p></td><td><p>" + sorted[i].elo +"</p></td></tr>";
 	    $("table").append(entry); 
       }
 	} 
