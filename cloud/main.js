@@ -65,10 +65,10 @@ Parse.Cloud.define("updateFight", function(request, response) {
 	var Users = Parse.Object.extend("Users");
 	var user = new Parse.Query(Users);
 
-	query.get(opponent).then{function (result) {
+	query.get(opponent).then(function (result) {
 		result.set("hasFight", status);
 		result.save();
-	}
+	});
 });
 
 	
