@@ -11,16 +11,33 @@ Parse.Cloud.define("getPic", function(request, response) {
 	query = new Parse.Query("Pictures");
   query.ascending("updatedAt");
   query.limit(5);
-  query.first().then(function(result) {
-	  // only the selected fields of the object will now be available here.
-	  //console.log("got pic");
-	  //console.log(result);
-	  return result.fetch();
-	}).then(function(result) {
-	  // all fields of the object will now be available here.
-	  payload = { "picId" : result.id, "picUrl" : result.get("URL") };
-	  //console.log(result);
-	  response.success(payload);
+  // query.first().then(function(result) {
+	  // // only the selected fields of the object will now be available here.
+	  // //console.log("got pic");
+	  // //console.log(result);
+	  // return result.fetch();
+	// }).then(function(result) {
+	  // // all fields of the object will now be available here.
+	  // payload = { "picId" : result.id, "picUrl" : result.get("URL") };
+	  // //console.log(result);
+	  // response.success(payload);
+	// });
+	query.find({
+	  success: function(results) {
+		//alert("Successfully retrieved " + results.length + " scores.");
+		// Do something with the returned Parse.Object values
+		//for (var i = 0; i < results.length; i++) { 
+		  var object = results[Math.floor((Math.random()*results.length));];
+		  payload = { "picId" : object.id, "picUrl" : object.get("URL") };
+		  console.log(result);
+		  response.success(payload);
+		  //alert(object.id + ' - ' + object.get('playerName'));
+		//}
+	  },
+	  error: function(error) {
+	  response.error(error);
+		//alert("Error: " + error.code + " " + error.message);
+	  }
 	});
 
 
