@@ -5,16 +5,11 @@ body {
 }
 
 #main {
-<<<<<<< HEAD
     width: 1000px;
-=======
-    width: 500px;
-	height:100%;
->>>>>>> 3dc5ba8c226bef2e6a546878f941b4147a0f39e6
     margin: auto;
     text-align: left;
     background: white;
-    padding: 50px 60px;
+
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
 }
