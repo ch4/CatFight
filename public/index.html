@@ -101,7 +101,7 @@
         currentUser.save({
             displayName: name,
             elo: 0,
-            hasFight : false;
+            hasFight : false
         }, {
           success: function(gameScore) {
             // The object was saved successfully.
@@ -116,8 +116,9 @@
 	function getPic() {
 		Parse.Cloud.run('getPic', {}, {
 		  success: function(result) {
-			$('#imageDiv').attr('style',"background-image: url('" + result.picUrl + "');background-repeat: no-repeat;background-size: cover;background-position-y: center;height:560px;margin-left: auto;margin-right: auto;");
+			//$('#imageDiv').attr('style',"background-image: url('" + result.picUrl + "');background-repeat: no-repeat;background-size: cover;background-position-y: center;height:560px;margin-left: auto;margin-right: auto;");
 			$('#currentImageId').text(result.picId);
+            $('#img1').attr('src',result.picUrl);
 		  },
 		  error: function(error) {
 		  }
@@ -139,6 +140,13 @@
 	<button id="loginBtn" style="float:right;" onclick="loginToFBThroughParse()" class="btn btn-default">Login</button> -->
 	<br>
 	<div id="imageDiv" ><p style="display:none" id="currentImageId"/></div>
+    <div id="imgDiv">
+    <table style="display:table;margin-left: auto;margin-right: auto;">
+          <tr>
+            <td style="height: 800px" ><img style="max-height: 100%; max-width: 100%" id="img1"></img></td>
+          </tr>
+        </table>
+    </div>
 
 	
 	<!-- <iframe style="width:100%; height:100%" src="leaderboard.html" seamless> -->
