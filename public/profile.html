@@ -16,15 +16,10 @@
 
 <body>
   <div id="main">
-    <h1>You're ready to use Parse!</h1>
+    <h1>Meow Profile!</h1>
 
     <div style="display:none" class="error">
       Looks like there was a problem saving the test object. Make sure you've set your application ID and javascript key correctly in the call to <code>Parse.initialize</code> in this file.
-    </div>
-
-    <div style="display:none" class="success">
-      <button onclick="loginToParse()">Log in</button>
-      <a href="javascript:loginToParse()">login</a>
     </div>
 
     <div style="display:none" class="empty">
@@ -36,25 +31,13 @@
         </P>
         <button onclick="submitLinks()">Submit</button>
     </div>
-
-    <script type="text/javascript">        
-        function loginToParse() {
-            Parse.User.logIn("harvey", "harvey", {
-              success: function(user) {
-              // Do stuff after successful login.
-              },
-              error: function(user, error) {
-              // The login failed. Check error to see why.
-              }
-            });
-        }
-    </script>
   </div>
 
   <script type="text/javascript">
     function countLink() {
         var Pictures = Parse.Object.extend("Pictures");
         var pics = new Parse.Query(Pictures);
+
         pics.equalTo("owner", Parse.User.current());
 //pics.equalTo("owner", "xxx");
         pics.count({
@@ -73,15 +56,41 @@
         });
     }
 
-    window.onload = countLink;
+    function checkURL(txt) {
+        //var txt='http://d24w6bsrhbeh9d.cloudfront.net/photo/aWZYnEZ_460s.jpg';
+
+        var re1='((?:http|https)(?::\\/{2}[\\w]+)(?:[\\/|\\.]?)(?:[^\\s"]*))';	// HTTP URL 1
+
+        var p = new RegExp(re1,["i"]);
+        var m = p.exec(txt);
+        if (m != null) {
+          return 0;
+        }
+        return 1;
+    }
+
+    function isLoggedIn() {
+        var currentUser = Parse.User.current();
+        if (currentUser) {
+            // do stuff with the user
+            countLink();
+        } else {
+//countLink();
+            // show the signup or login page
+            window.location.href = "index.html";
+        }
+    }
+
+    window.onload = isLoggedIn;
 
     function submitLinks(){
         var Pictures = Parse.Object.extend("Pictures");
         var pic1 = new Pictures();
         var pic2 = new Pictures();
         var pic3 = new Pictures();
-        if ($('#link1').val() == "" || $('#link2').val() == "" || $('#link3').val() == "") {
-            alert("You must not leave any field blank!");
+
+        if ($('#link1').val() == "" || $('#link2').val() == "" || $('#link3').val() == "" || checkURL($('#link1').val()) || checkURL($('#link2').val()) || checkURL($('#link3').val())) {
+            alert("You must input valid links for image!");
         } else {
             pic1.save({
                 URL: $('#link1').val(),
