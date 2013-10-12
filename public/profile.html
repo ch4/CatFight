@@ -20,14 +20,14 @@
 <div class="nav">
 	<ul class="nav nav-tabs">
 	  <li><a href="index.html">Home</a></li>
-	  <li class="active"><a href="#">Profile</a></li>
+	  <li class="active"><a href="#">Status</a></li>
 	  <li><a href="leaderboard.html">Leaderboard</a></li>
 	</ul>
   </div>
   <div id="fb-root"></div>
 
   <div id="main">
-    <h1 style="display:table;margin-left: auto;margin-right: auto;">Meow Profile!</h1>
+    <h1 style="display:table;margin-left: auto;margin-right: auto;">Meow Status!</h1>
     <button onclick="getFight()" style="display:table; margin-left: auto; margin-right: auto;">Start a match!</button>
     <div style="display:none" class="error">
       Looks like there was a problem saving the test object. Make sure you've set your application ID and javascript key correctly in the call to <code>Parse.initialize</code> in this file.
@@ -44,7 +44,7 @@
     </div>
 
     <div style="display:none" class="picture">
-        <p style="display:table;margin-left: auto;margin-right: auto;"><b>These are your 3 image choices of the day.</b></p>
+        <h3 style="display:table;margin-left: auto;margin-right: auto;"><b>These are your 3 image choices of the day.</b></h3>
 
         <table style="display:table;margin-left: auto;margin-right: auto;">
           <tr>
@@ -52,7 +52,21 @@
             <td style="height: 300px" ><a id="imgl2"><img style="max-height: 100%; max-width: 100%" id="img2"></img></a></td>
             <td style="height: 300px" ><a id="imgl3"><img style="max-height: 100%; max-width: 100%" id="img3"></img></a></td>
           </tr>
-          <tr  id="scores">
+          <tr id="scores">
+          </tr>
+        </table>
+<!--  style="height: 200px"  style="max-height: 100%; max-width: 100%" -->
+  </div>
+
+    <div style="display:none" class="opicture">
+        <h3 style="display:table;margin-left: auto;margin-right: auto;"><b>And your opponents'</b></h3>
+        <table style="display:table;margin-left: auto;margin-right: auto;">
+          <tr>
+            <td style="height: 300px" ><a id="oppl1"><img style="max-height: 100%; max-width: 100%" id="opp1"></img></a></td>
+            <td style="height: 300px" ><a id="oppl2"><img style="max-height: 100%; max-width: 100%" id="opp2"></img></a></td>
+            <td style="height: 300px" ><a id="oppl3"><img style="max-height: 100%; max-width: 100%" id="opp3"></img></a></td>
+          </tr>
+          <tr id="oscores">
           </tr>
         </table>
 <!--  style="height: 200px"  style="max-height: 100%; max-width: 100%" -->
@@ -94,6 +108,58 @@
         });
     }
 
+    function checkFight() {
+        if (Parse.User.current().get('hasFight') == true) {
+            var findA = new Parse.Query("Fights");
+            findA.equalTo("UserA", Parse.User.current());
+             
+            var findB = new Parse.Query("Fights");
+            findB.equalTo("UserB", Parse.User.current());
+             
+            var found = Parse.Query.or(findA, findB);
+            found.first({
+              success: function(results) {
+                results.fetch({
+                    success: function(res) {
+                        // results contains the fight.
+                        if (res.get('UserA') == Parse.User.current()) { // oppo is B
+                            showOppo(res.get('UserA'));
+                        } else { // oppo is A
+                            showOppo(res.get('UserB'));
+                        }
+                    }
+                   });
+              },
+              error: function(error) {
+                // There was an error.
+              }
+            });
+        }
+    }
+
+    function showOppo(oppo) {
+        var Pictures = Parse.Object.extend("Pictures");
+        var pics = new Parse.Query(Pictures);
+
+        pics.equalTo("owner", oppo);
+        pics.find({
+            success: function(results) {
+                // Do something with the returned Parse.Object values
+                //$('#scores').append("<table class=\"table\"><tr>");
+                for (var i = 0; i < results.length; i++) { 
+                    var object = results[i];
+                    $('#opp'+(i+1)).attr('src',object.get('URL'));
+                    $('#oppl'+(i+1)).attr('href',object.get('URL'));
+                    $('#oscores').append("<td>MEOW~ : " + object.get('rating') + "<br>Total Views : " + object.get('totalViews') + "</td>");
+                }
+                $(".opicture").show();
+            },
+                error: function(error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+
     function checkURL(url) {
         //var txt='http://d24w6bsrhbeh9d.cloudfront.net/photo/aWZYnEZ_460s.jpg';
 
@@ -112,6 +178,7 @@
         if (currentUser) {
             // do stuff with the user
             countLink();
+            checkFight();
         } else {
 //countLink();
             // show the signup or login page
