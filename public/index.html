@@ -71,7 +71,11 @@
    }(document, 'script', 'facebook-jssdk'));
 </script>
   <div id="main">
-    
+    <h1><b>Does this MEOW you?</b></h1>
+    <div class="btn-group" style="display:table;margin-left: auto;margin-right: auto;" >
+		<button onclick="ratePic('up')" class="btn btn-default">Meow~</button>
+		<button onclick="ratePic('down')" class="btn btn-default">Ugly!</button>
+	</div>
 <script type="text/javascript">
         
 	function loginToFBThroughParse() {
@@ -133,10 +137,7 @@
 	<br>
 	<div id="imageDiv" ><p style="display:none" id="currentImageId"/></div>
 
-	<div class="btn-group" style="display:table;margin-left: auto;margin-right: auto;" >
-		<button onclick="ratePic('up')" class="btn btn-default">Upvote</button>
-		<button onclick="ratePic('down')" class="btn btn-default">Downvote</button>
-	</div>
+	
 	<!-- <iframe style="width:100%; height:100%" src="leaderboard.html" seamless> -->
   </div>
 </body>

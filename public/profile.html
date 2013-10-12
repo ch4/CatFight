@@ -45,11 +45,17 @@
 
     <div style="display:none" class="picture">
         <p><b>These are your 3 image choices of the day.</b></p>
-        <div style="height: 200px" id="scores">
-            <img style="max-height: 100%; max-width: 100%" id="img1"></img>
-            <img style="max-height: 100%; max-width: 100%" id="img2"></img>
-            <img style="max-height: 100%; max-width: 100%" id="img3"></img>
-        </div>
+
+        <table>
+          <tr>
+            <td style="height: 300px" ><img style="max-height: 100%; max-width: 100%" id="img1"></img></td>
+            <td style="height: 300px" ><img style="max-height: 100%; max-width: 100%" id="img2"></img></td>
+            <td style="height: 300px" ><img style="max-height: 100%; max-width: 100%" id="img3"></img></td>
+          </tr>
+          <tr  id="scores">
+          </tr>
+        </table>
+<!--  style="height: 200px"  style="max-height: 100%; max-width: 100%" -->
   </div>
 
   <script type="text/javascript">
@@ -67,13 +73,12 @@
                 pics.find({
                     success: function(results) {
                         // Do something with the returned Parse.Object values
-                        $('#scores').append("<table><tr>");
+                        //$('#scores').append("<table class=\"table\"><tr>");
                         for (var i = 0; i < results.length; i++) { 
                             var object = results[i];
                             $('#img'+(i+1)).attr('src',object.get('URL'));
-                            $('#scores').append("<td width=\"300px\">up: " + object.get('rating') + " total view: " + object.get('totalViews') + "</td>");
+                            $('#scores').append("<td>MEOW~ : " + object.get('rating') + "<br>Total Views : " + object.get('totalViews') + "</td>");
                         }
-                        $('#scores').append("</tr></table>");
                         $(".picture").show();
                     },
                         error: function(error) {
