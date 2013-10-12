@@ -79,11 +79,12 @@
 	function ratePic(decision) {
 		Parse.Cloud.run('submitRating', {picId:$('#currentImageId').text(), rating: decision}, {
 		  success: function(result) {
+		  
 		  },
 		  error: function(error) {
 		  }
 		});
-	
+		getPic();
 	}
 
 </script>
