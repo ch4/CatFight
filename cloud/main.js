@@ -59,6 +59,7 @@ Parse.Cloud.define("submitRating", function(request, response) {
 });
 
 Parse.Cloud.define("updateFight", function(request, response) {
+Parse.Cloud.useMasterKey();
 	var opponent = request.params.opponent;
 	var status = request.params.status;
 	
