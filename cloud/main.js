@@ -94,7 +94,6 @@ Parse.Cloud.define("fight", function(request, response) {
 	    	  rating += pic.get("rating")/pic.get("totalViews");
 			}
 			return rating;
-	      }
 		},
 		error: function(error) {
 			response.error(error);
