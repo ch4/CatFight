@@ -63,11 +63,37 @@
 		  }
 		});
 	}
+	
+	function getPic() {
+		Parse.Cloud.run('getPic', {}, {
+		  success: function(result) {
+			$('#currentImage').attr('src',result.get('picUrl');
+			$('#currentImageId').val(result.get('picId'));
+		  },
+		  error: function(error) {
+		  }
+		});
+
+	}
+	
+	function ratePic(decision) {
+		Parse.Cloud.run('submitRating', {id:$('#currentImageId').val(), rating: decision}, {
+		  success: function(result) {
+		  },
+		  error: function(error) {
+		  }
+		});
+	
+	}
 
 </script>
     <div>
 	<button onclick="loginToFBThroughParse()">Login</button>
-      
+	<br>
+	<div id="imageDiv"><img id="currentImage"><span id="currentImageId"/></div>
+    <button onclick="getPic()">GetPic</button>
+	<button onclick="ratePic('up')">Upvote</button>
+	<button onclick="ratePic('down')">Downvote</button>
 
 
     </div>

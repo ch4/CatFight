@@ -28,8 +28,8 @@ Parse.Cloud.define("submitRating", function(request, response) {
 	var query;
 	query = new Parse.Query("Pictures");
 	query.fetch(id).then(function(result) {
-		result.increment("rating");
 		result.increment("totalViews");
+		if(rating == "up") result.increment("rating");
 		result.save();
 	});
   response.success("success");
