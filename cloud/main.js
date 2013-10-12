@@ -111,7 +111,6 @@ Parse.Cloud.define("fight", function(request, response) {
 				}
 				response.success(total + " " + rating);
 				//return rating;
-			  }
 			},
 			error: function(error) {
 				response.error(error);
