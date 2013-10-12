@@ -1,0 +1,126 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+
+    <title>My Profile</title>
+    <meta name="description" content="My Parse App">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="parse-1.2.12.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("3tHHUyxjtuSEiHranjliYJkJ36fEO89Ql77L2jng", "nY2YCI6Jn6ikyBWrjOxf3zj5bc8aPL5gvIUgGC5C");
+    </script>
+</head>
+
+<body>
+  <div id="main">
+    <h1>You're ready to use Parse!</h1>
+
+    <div style="display:none" class="error">
+      Looks like there was a problem saving the test object. Make sure you've set your application ID and javascript key correctly in the call to <code>Parse.initialize</code> in this file.
+    </div>
+
+    <div style="display:none" class="success">
+      <button onclick="loginToParse()">Log in</button>
+      <a href="javascript:loginToParse()">login</a>
+    </div>
+
+    <div style="display:none" class="empty">
+        <h3><b>Please upload your 3 choices of the day.</b></h3>
+	    <p>
+        <b>Link 1 : </b><input id="link1"></input><br>
+        <b>Link 2 : </b><input id="link2"></input><br>
+        <b>Link 3 : </b><input id="link3"></input><br>
+        </P>
+        <button onclick="submitLinks()">Submit</button>
+    </div>
+
+    <script type="text/javascript">        
+        function loginToParse() {
+            Parse.User.logIn("harvey", "harvey", {
+              success: function(user) {
+              // Do stuff after successful login.
+              },
+              error: function(user, error) {
+              // The login failed. Check error to see why.
+              }
+            });
+        }
+    </script>
+  </div>
+
+  <script type="text/javascript">
+    function countLink() {
+        var Pictures = Parse.Object.extend("Pictures");
+        var pics = new Parse.Query(Pictures);
+        pics.equalTo("owner", Parse.User.current());
+//pics.equalTo("owner", "xxx");
+        pics.count({
+          success: function(count) {
+            // The count request succeeded. Show the count
+            //$('#main').append("<p>Count = " + count + "</p>");
+            if (count == 0) {
+                $(".empty").show();
+            } else {
+                $("#main").append("<div><p><b>You have already uploaded your choices of the day.</b></p></div>");
+            }
+          },
+          error: function(error) {
+            // The request failed
+          }
+        });
+    }
+
+    window.onload = countLink;
+
+    function submitLinks(){
+        var Pictures = Parse.Object.extend("Pictures");
+        var pic1 = new Pictures();
+        var pic2 = new Pictures();
+        var pic3 = new Pictures();
+        if ($('#link1').val() == "" || $('#link2').val() == "" || $('#link3').val() == "") {
+            alert("You must not leave any field blank!");
+        } else {
+            pic1.save({
+                URL: $('#link1').val(),
+                owner: Parse.User.current(),
+                type: "cat"
+              }, {
+                success: function(object) {
+              },
+                error: function(model, error) {
+                $(".error").show();
+              }
+            });
+            pic2.save({
+                URL: $('#link2').val(),
+                owner: Parse.User.current(),
+                type: "cat"
+              }, {
+                success: function(object) {
+              },
+                error: function(model, error) {
+                $(".error").show();
+              }
+            });
+            pic3.save({
+                URL: $('#link3').val(),
+                owner: Parse.User.current(),
+                type: "cat"
+              }, {
+                success: function(object) {
+              },
+                error: function(model, error) {
+                $(".error").show();
+              }
+            });
+            $(".empty").hide();
+            $("#main").append("<b>Successfully uploaded your choices.</b>");
+        }
+    }
+  </script>
+</body>
+
+</html>
