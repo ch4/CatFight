@@ -14,7 +14,16 @@
   <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
   Parse.initialize("3tHHUyxjtuSEiHranjliYJkJ36fEO89Ql77L2jng", "nY2YCI6Jn6ikyBWrjOxf3zj5bc8aPL5gvIUgGC5C");
-
+	function redirectLogin(){
+		var currentUser = Parse.User.current();
+		if (currentUser) {
+			// do stuff with the user
+			window.location.href="profile.html";
+		} else {
+			// show the signup or login page
+			loginToFBThroughParse();
+		}
+	}
 </script>
 </head>
 
@@ -22,7 +31,7 @@
 <div class="nav">
 	<ul class="nav nav-tabs">
 	  <li class="active"><a href="#">Home</a></li>
-	  <li><a href="redirectLogin()">Profile</a></li>
+	  <li><a href="javascript:redirectLogin();">Profile</a></li>
 	  <li><a href="leaderboard.html">Leaderboard</a></li>
 	</ul>
   </div>
@@ -37,19 +46,7 @@
 			// show the signup or login page
 		}
 	});
-	
-	function redirectLogin(){
-		var currentUser = Parse.User.current();
-		if (currentUser) {
-			// do stuff with the user
-			window.location.href="profile.html";
-		} else {
-			// show the signup or login page
-			loginToFBThroughParse();
-		}
 		
-	}
-	
 	
   window.fbAsyncInit = function() {
     // init the FB JS SDK
