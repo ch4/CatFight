@@ -81,13 +81,14 @@
 	function loginToFBThroughParse() {
 		Parse.FacebookUtils.logIn("user_likes,email", {
 		  success: function(user) {
-            FB.api('/me', function(response) {
-                //alert(response.name);
-                //user.set("username", response.name);
-                setDisplayName(response.name);
-            });
-			// Handle successful login
-			//$('#loginBtn').hide();
+            if (!user.existed()) {
+                FB.api('/me', function(response) {
+                    //alert(response.name);
+                    setDisplayName(response.name);
+                });
+            } else {
+              //alert("User logged in through Facebook!");
+            }
 		  },
 		  error: function(user, error) {
 			// Handle errors and cancellation
@@ -98,7 +99,9 @@
     function setDisplayName(name) {
         var currentUser = Parse.User.current();
         currentUser.save({
-          displayName: name
+            displayName: name,
+            elo: 0,
+            hasFight : false;
         }, {
           success: function(gameScore) {
             // The object was saved successfully.
