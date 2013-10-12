@@ -67,7 +67,7 @@ Parse.Cloud.define("updateFight", function(request, response) {
 
 	query.get(opponent).then{function (result) {
 		result.set("hasFight", status);
-		result.save()
+		result.save();
 	}
 });
 
