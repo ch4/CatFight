@@ -45,7 +45,7 @@
 success: function(users) {
   var usernames = {};
   for (var k=0;k<users.length;k++) {
-    usernames[users[k].id] = users[k].get("username");
+    usernames[users[k].id] = users[k].get("displayName");
   }
   console.log(usernames);
       var Pictures = Parse.Object.extend("Pictures");
@@ -74,7 +74,7 @@ success: function(users) {
 		    //  continue;
 		    //}
 		    var score = ratings[key]/counts[name];
-		    sorted.push({'username':key, 'score':score });
+		    sorted.push({'displayName':key, 'score':score });
 	  	  }
 	  	  sorted.sort(function(a,b) { return b.score-a.score;});
 	  	  dispLeaders(sorted,length);
@@ -88,13 +88,13 @@ error: function() { alert("No User found!");}
 	  });
 	}
   function dispLeaders(sorted, length) {
-	var currUser = Parse.User.current().get("username");
+	var currUser = Parse.User.current().get("displayName");
 	for (var i=0; i<sorted.length; i++) {
-	  if (sorted[i].username == currUser) {
-	    var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
+	  if (sorted[i].displayName == currUser) {
+	    var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].displayName + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
 	    $("table").append(entry); 
 	  } else if (i<length) {
-	    var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
+	    var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].displayName + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
 	    $("table").append(entry); 
       }
 	} 
@@ -102,5 +102,4 @@ error: function() { alert("No User found!");}
 window.onload=function() {getLeaders(5);};
   </script>
 </body>
-
 </html>
