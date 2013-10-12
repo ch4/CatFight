@@ -29,7 +29,7 @@ Parse.Cloud.define("getPic", function(request, response) {
 		//for (var i = 0; i < results.length; i++) { 
 		  var object = results[Math.floor((Math.random()*results.length))];
 		  payload = { "picId" : object.id, "picUrl" : object.get("URL") };
-		  console.log(result);
+		  console.log(object);
 		  response.success(payload);
 		  //alert(object.id + ' - ' + object.get('playerName'));
 		//}
