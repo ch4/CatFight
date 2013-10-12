@@ -31,6 +31,14 @@
         </P>
         <button onclick="submitLinks()">Submit</button>
     </div>
+
+    <div style="display:none" class="picture">
+        <p><b>These are your 3 image choices of the day.</b></p>
+        <div style="height: 200px" id="scores">
+            <img style="max-height: 100%; max-width: 100%" id="img1"></img>
+            <img style="max-height: 100%; max-width: 100%" id="img2"></img>
+            <img style="max-height: 100%; max-width: 100%" id="img3"></img>
+        </div>
   </div>
 
   <script type="text/javascript">
@@ -39,15 +47,28 @@
         var pics = new Parse.Query(Pictures);
 
         pics.equalTo("owner", Parse.User.current());
-//pics.equalTo("owner", "xxx");
         pics.count({
           success: function(count) {
             // The count request succeeded. Show the count
-            //$('#main').append("<p>Count = " + count + "</p>");
             if (count == 0) {
                 $(".empty").show();
             } else {
-                $("#main").append("<div><p><b>You have already uploaded your choices of the day.</b></p></div>");
+                pics.find({
+                    success: function(results) {
+                        // Do something with the returned Parse.Object values
+                        $('#scores').append("<table><tr>");
+                        for (var i = 0; i < results.length; i++) { 
+                            var object = results[i];
+                            $('#img'+(i+1)).attr('src',object.get('URL'));
+                            $('#scores').append("<td width=\"300px\">up: " + object.get('rating') + " total view: " + object.get('totalViews') + "</td>");
+                        }
+                        $('#scores').append("</tr></table>");
+                        $(".picture").show();
+                    },
+                        error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
             }
           },
           error: function(error) {
@@ -56,15 +77,15 @@
         });
     }
 
-    function checkURL(txt) {
+    function checkURL(url) {
         //var txt='http://d24w6bsrhbeh9d.cloudfront.net/photo/aWZYnEZ_460s.jpg';
 
         var re1='((?:http|https)(?::\\/{2}[\\w]+)(?:[\\/|\\.]?)(?:[^\\s"]*))';	// HTTP URL 1
 
         var p = new RegExp(re1,["i"]);
-        var m = p.exec(txt);
-        if (m != null) {
-          return 0;
+        var m = p.exec(url);
+        if (m != null && url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+            return 0;
         }
         return 1;
     }
