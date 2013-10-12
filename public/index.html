@@ -21,21 +21,23 @@
 <body onload="getPic()">
   <div id="fb-root"></div>
 <script>
-	var currentUser = Parse.User.current();
-	if (currentUser) {
-		// do stuff with the user
-		$('#loginBtn').hide();
-	} else {
-		// show the signup or login page
-	}
+	$(document).ready(function() {
+		var currentUser = Parse.User.current();
+		if (currentUser) {
+			// do stuff with the user
+			$('#loginBtn').hide();
+		} else {
+			// show the signup or login page
+		}
+	});
 	
-
+	
   window.fbAsyncInit = function() {
     // init the FB JS SDK
     Parse.FacebookUtils.init({
       appId      : '424616640981705',                        // App ID from the app dashboard
       channelUrl : '//catfight.parseapp.com/channel.html', // Channel file for x-domain comms
-      status     : true,                                 // Check Facebook Login status
+      //status     : true,                                 // Check Facebook Login status
 	  cookie     : true, // enable cookies to allow Parse to access the session
       xfbml      : true                                  // Look for social plugins on the page
     });
@@ -60,6 +62,7 @@
 		Parse.FacebookUtils.logIn("user_likes,email", {
 		  success: function(user) {
 			// Handle successful login
+			$('#loginBtn').hide();
 		  },
 		  error: function(user, error) {
 			// Handle errors and cancellation
@@ -76,13 +79,11 @@
 		  error: function(error) {
 		  }
 		});
-
 	}
 	
 	function ratePic(decision) {
 		Parse.Cloud.run('submitRating', {picId:$('#currentImageId').text(), rating: decision}, {
 		  success: function(result) {
-		  
 		  },
 		  error: function(error) {
 		  }
@@ -95,7 +96,7 @@
 	<button id="loginBtn" style="float:right;" onclick="loginToFBThroughParse()" class="btn btn-default">Login</button>
 	<br>
 	<div id="imageDiv" ><p style="display:none" id="currentImageId"/></div>
-<!--     <button onclick="getPic()">GetPic</button> -->
+
 	<div class="btn-group" style="display:table;margin-left: auto;margin-right: auto;" >
 		<button onclick="ratePic('up')" class="btn btn-default">Upvote</button>
 		<button onclick="ratePic('down')" class="btn btn-default">Downvote</button>
