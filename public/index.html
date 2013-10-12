@@ -73,7 +73,7 @@
 	function getPic() {
 		Parse.Cloud.run('getPic', {}, {
 		  success: function(result) {
-			$('#imageDiv').attr('style',"background-image: url('" + result.picUrl + "');background-repeat: no-repeat;background-size: cover;background-position-y: center;height:500px;display:table;margin-left: auto;margin-right: auto;");
+			$('#imageDiv').attr('style',"background-image: url('" + result.picUrl + "');background-repeat: no-repeat;background-size: cover;background-position-y: center;height:500px;margin-left: auto;margin-right: auto;");
 			$('#currentImageId').text(result.picId);
 		  },
 		  error: function(error) {
