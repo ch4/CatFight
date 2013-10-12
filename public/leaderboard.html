@@ -2,8 +2,8 @@
 <head>
   <meta charset="utf-8">
 
-  <title>My Parse App</title>
-  <meta name="description" content="My Parse App">
+  <title>LeaderBoard</title>
+  <meta name="description" content="LeaderBoard">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
@@ -17,12 +17,19 @@
 </head>
 
 <body>
+  <div class="nav">
+	<ul class="nav nav-tabs">
+	  <li><a href="index">Home</a></li>
+	  <li><a href="profile">Profile</a></li>
+	  <li class="active"><a href="#">Leaderboard</a></li>
+	</ul>
+  </div>
   <header class="page-title container">
   <div class="head">
-    <h1 class="span6">LeaderBoard</h1>
+    <h1 class="span6">Leaderboard</h1>
   </div>
   </header>
-  <table class="table table-striped">
+  <table class="table table-striped table-bordered">
 	<tr>
 	  <td><p>Rank</p></td>
 	  <td><p>User</p></td>
@@ -34,45 +41,64 @@
 	function getLeaders(length) {
       var User = Parse.Object.extend("User");
       var userQuery = new Parse.Query(User);
+	  userQuery.find({
+success: function(users) {
+  var usernames = {};
+  for (var k=0;k<users.length;k++) {
+    usernames[users[k].id] = users[k].get("username");
+  }
+  console.log(usernames);
       var Pictures = Parse.Object.extend("Pictures");
       var picQuery = new Parse.Query(Pictures);
 	  picQuery.find({
         success: function(pics) {
 	      var ratings = {};
+	      var counts = {};
 	      for (var j=0; j<pics.length; j++) {
 	        var pic = pics[j];
 			var user = pic.get("owner");
 			if (user === null) continue;
-			var name = user.id;
-			if (ratings[name] === undefined) 
+			var name = usernames[user.id];
+			if (ratings[name] === undefined) {
 	    	  ratings[name] = pic.get("rating")/pic.get("totalViews");
-			else 
+			  counts[name] = 1;
+			} else { 
 	    	  ratings[name] += pic.get("rating")/pic.get("totalViews");
+			  counts[name] += 1;
+			}
 	      }
 	  	  var sorted = [];
 	  	  for (var key in ratings) {
-		    sorted.push({'username':key, 'score':ratings[key] });
+		    //if (counts[name] != 3) {
+		    //  alert("Pictures number != 3!");
+		    //  continue;
+		    //}
+		    var score = ratings[key]/counts[name];
+		    sorted.push({'username':key, 'score':score });
 	  	  }
 	  	  sorted.sort(function(a,b) { return b.score-a.score;});
-	  	  dispLeaders(sorted.slice(0,length));
+	  	  dispLeaders(sorted,length);
 	    },
         error: function() {
 				 alert("No Picture found!");
 	    }
 	  });
+		 },
+error: function() { alert("No User found!");}
+	  });
 	}
-  function dispLeaders(leaders) {
-	//var unsort = {"3":1.2,"2":2.3,"5":4.3};
-	//unsort[6] = unsort[6]===undefined?0:unsort[6]+5.0;
-	//console.log(unsort);
-	//var map = {"6":"efg","3":"abc","2":"cde","5":"opt"};
-	//var leaders = sortObj(unsort, map, 4);
-	//var leaders = [{"username":"abc","score":1.2},{"username":"cde","score":0.5},{"username":"opt","score":0.2}];
-	//var leaders = getLeaders(2);
-	//console.log(leaders);
-	for (var i=0; i<leaders.length; i++) {
-	  var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p>" + leaders[i].username + "</p></td><td><p>" + leaders[i].score +"</p></td></tr>";
+  function dispLeaders(sorted, length) {
+	for (var i=0; i<length; i++) {
+	  if (i>=sorted.length) break;
+	  var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
 	$("table").append(entry); 
+	}
+	var currUser = Parse.User.current().id;
+	for (var i=0; i<sorted.length; i++) {
+	  if (sorted[i].username == currUser) {
+	  var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].username + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
+	$("table").append(entry); 
+	}
 	}
   }
 window.onload=function() {getLeaders(5);};
