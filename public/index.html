@@ -126,6 +126,15 @@
 		});
 	}
 	
+	function fight() {
+		Parse.Cloud.run('fight', {}, {
+		  success: function(result) {
+		  },
+		  error: function(error) {
+		  }
+		});
+	}
+	
 	function ratePic(decision) {
 		Parse.Cloud.run('submitRating', {picId:$('#currentImageId').text(), rating: decision}, {
 		  success: function(result) {
