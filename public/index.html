@@ -14,10 +14,11 @@
   <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
   Parse.initialize("3tHHUyxjtuSEiHranjliYJkJ36fEO89Ql77L2jng", "nY2YCI6Jn6ikyBWrjOxf3zj5bc8aPL5gvIUgGC5C");
+
 </script>
 </head>
 
-<body>
+<body onload="getPic()">
   <div id="fb-root"></div>
 <script>
 	var currentUser = Parse.User.current();
@@ -27,7 +28,7 @@
 	} else {
 		// show the signup or login page
 	}
-
+	
 
   window.fbAsyncInit = function() {
     // init the FB JS SDK
@@ -55,16 +56,6 @@
     
 <script type="text/javascript">
         
-    function loginToParse(username,password) {
-        Parse.User.logIn(username, password, {
-          success: function(user) {
-            // Do stuff after successful login.
-          },
-          error: function(user, error) {
-            // The login failed. Check error to see why.
-          }
-        });
-    }
 	function loginToFBThroughParse() {
 		Parse.FacebookUtils.logIn("user_likes,email", {
 		  success: function(user) {
@@ -79,7 +70,7 @@
 	function getPic() {
 		Parse.Cloud.run('getPic', {}, {
 		  success: function(result) {
-			$('#imageDiv').attr('style',"background-image: url('" + result.picUrl + "');background-repeat: no-repeat;background-size: contain;display:block;min-width:50%;height:300px");
+			$('#imageDiv').attr('style',"background-image: url('" + result.picUrl + "');background-repeat: no-repeat;background-size: contain;min-width:50%;height:300px;display:table;margin-left: auto;margin-right: auto;");
 			$('#currentImageId').text(result.picId);
 		  },
 		  error: function(error) {
@@ -103,17 +94,13 @@
 	<button id="profileBtn" onclick="window.location.href='profile.html'" class="btn btn-default">Profile</button>
 	<button id="loginBtn" style="float:right;" onclick="loginToFBThroughParse()" class="btn btn-default">Login</button>
 	<br>
-	<div id="imageDiv"><p style="display:none" id="currentImageId"/></div>
+	<div id="imageDiv" ><p style="display:none" id="currentImageId"/></div>
 <!--     <button onclick="getPic()">GetPic</button> -->
-	<div class="btn-group" style="margin-left:29%;margin-right:25%;" >
+	<div class="btn-group" style="display:table;margin-left: auto;margin-right: auto;" >
 		<button onclick="ratePic('up')" class="btn btn-default">Upvote</button>
 		<button onclick="ratePic('down')" class="btn btn-default">Downvote</button>
 	</div>
 	<iframe style="width:100%; height:100%" src="leaderboard.html" seamless>
-	<script type="text/javascript">
-		getPic();
-	</script>
-
   </div>
 </body>
 
