@@ -13,13 +13,17 @@ Parse.Cloud.define("getPic", function(request, response) {
   query.limit(5);
   query.first().then(function(result) {
 	  // only the selected fields of the object will now be available here.
+	  console.log("got pic");
+	  console.log(result);
 	  return result.fetch();
 	}).then(function(result) {
 	  // all fields of the object will now be available here.
 	  payload = { "picId" : result.id, "picUrl" : result.get("URL") };
+	  console.log(result);
+	  response.success(payload);
 	});
 
-  response.success(payload);
+
 });
 
 Parse.Cloud.define("submitRating", function(request, response) {

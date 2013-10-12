@@ -67,7 +67,7 @@
 	function getPic() {
 		Parse.Cloud.run('getPic', {}, {
 		  success: function(result) {
-			$('#currentImage').attr('src',result.get('picUrl');
+			$('#currentImage').attr('src',result.get('picUrl'));
 			$('#currentImageId').val(result.get('picId'));
 		  },
 		  error: function(error) {
