@@ -34,7 +34,9 @@ Parse.Cloud.define("submitRating", function(request, response) {
 	query.fetch(id).then(function(result) {
 		result.increment("totalViews");
 		if(rating == "up") result.increment("rating");
-		result.save();
+		result.save().then(function(result) {
+		response.success("success");
+		});
 	});
-  response.success("success");
+
 });
