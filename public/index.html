@@ -119,6 +119,7 @@
 			//$('#imageDiv').attr('style',"background-image: url('" + result.picUrl + "');background-repeat: no-repeat;background-size: cover;background-position-y: center;height:560px;margin-left: auto;margin-right: auto;");
 			$('#currentImageId').text(result.picId);
             $('#img1').attr('src',result.picUrl);
+            $('#img1l').attr('href',result.picUrl);
 		  },
 		  error: function(error) {
 		  }
@@ -143,7 +144,7 @@
     <div id="imgDiv">
     <table style="display:table;margin-left: auto;margin-right: auto;">
           <tr>
-            <td style="height: 800px" ><img style="max-height: 100%; max-width: 100%" id="img1"></img></td>
+            <td style="height: 800px" ><a id="img1l"><img style="max-height: 100%; max-width: 100%" id="img1"></img></a></td>
           </tr>
         </table>
     </div>
