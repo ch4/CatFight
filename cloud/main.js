@@ -9,17 +9,17 @@ Parse.Cloud.define("getPic", function(request, response) {
 	var payload;
 	var query;
 	query = new Parse.Query("Pictures");
-  query.descending("updatedAt");
+  query.ascending("updatedAt");
   query.limit(5);
   query.first().then(function(result) {
 	  // only the selected fields of the object will now be available here.
-	  console.log("got pic");
-	  console.log(result);
+	  //console.log("got pic");
+	  //console.log(result);
 	  return result.fetch();
 	}).then(function(result) {
 	  // all fields of the object will now be available here.
 	  payload = { "picId" : result.id, "picUrl" : result.get("URL") };
-	  console.log(result);
+	  //console.log(result);
 	  response.success(payload);
 	});
 
