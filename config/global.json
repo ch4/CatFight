@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "CatFight": {
+            "applicationId": "3tHHUyxjtuSEiHranjliYJkJ36fEO89Ql77L2jng", 
+            "masterKey": "ocTVSdtWDn71eF6OjGB4zHlYZ0tKwPfnaFIAEWyc"
+        }, 
+        "_default": {
+            "link": "CatFight"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.12"
+    }
+}
