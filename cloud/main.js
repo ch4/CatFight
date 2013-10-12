@@ -97,7 +97,7 @@ Parse.Cloud.define("fight", function(request, response) {
 		},
 		error: function(error) {
 			response.error(error);
-		});
+		}
 	  }).then(function(total) {
 		  var Pictures = Parse.Object.extend("Pictures");
 		  var picQuery = new Parse.Query(Pictures);
