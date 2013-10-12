@@ -118,4 +118,4 @@ Parse.Cloud.define("fight", function(request, response) {
 			});
 	  });
 	});
-});
+});});
