@@ -41,7 +41,7 @@
 		var currentUser = Parse.User.current();
 		if (currentUser) {
 			// do stuff with the user
-			$('#loginBtn').hide();
+			//$('#loginBtn').hide();
 		} else {
 			// show the signup or login page
 		}
@@ -77,14 +77,34 @@
 	function loginToFBThroughParse() {
 		Parse.FacebookUtils.logIn("user_likes,email", {
 		  success: function(user) {
+            FB.api('/me', function(response) {
+                //alert(response.name);
+                //user.set("username", response.name);
+                setDisplayName(response.name);
+            });
 			// Handle successful login
-			$('#loginBtn').hide();
+			//$('#loginBtn').hide();
 		  },
 		  error: function(user, error) {
 			// Handle errors and cancellation
 		  }
 		});
 	}
+
+    function setDisplayName(name) {
+        var currentUser = Parse.User.current();
+        currentUser.save({
+          displayName: name
+        }, {
+          success: function(gameScore) {
+            // The object was saved successfully.
+          },
+          error: function(gameScore, error) {
+            // The save failed.
+            // error is a Parse.Error with an error code and description.
+          }
+        });
+    }
 	
 	function getPic() {
 		Parse.Cloud.run('getPic', {}, {
