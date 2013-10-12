@@ -70,8 +70,8 @@ Parse.Cloud.define("updateFight", function(request, response) {
   success: function(myObject) {
     // The object was refreshed successfully.
 	//return myObject;
-	result.set("hasFight", status);
-		result.save().then(function () {
+	myObject.set("hasFight", status);
+		myObject.save().then(function () {
 			response.success("success");
 			});
 	},
