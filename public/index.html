@@ -2,37 +2,49 @@
 <head>
   <meta charset="utf-8">
 
-  <title>My Parse App</title>
+  <title>CatFight!</title>
   <meta name="description" content="My Parse App">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
-  <script type="text/javascript" src="jquery.min.js"></script>
-  <script type="text/javascript" src="parse-1.2.12.min.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
 <script type="text/javascript">
   Parse.initialize("3tHHUyxjtuSEiHranjliYJkJ36fEO89Ql77L2jng", "nY2YCI6Jn6ikyBWrjOxf3zj5bc8aPL5gvIUgGC5C");
 </script>
 </head>
 
 <body>
-  
+  <div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    Parse.FacebookUtils.init({
+      appId      : '424616640981705',                        // App ID from the app dashboard
+      channelUrl : '//catfight.parseapp.com/channel.html', // Channel file for x-domain comms
+      status     : true,                                 // Check Facebook Login status
+	  cookie     : true, // enable cookies to allow Parse to access the session
+      xfbml      : true                                  // Look for social plugins on the page
+    });
+
+    // Additional initialization code such as adding Event Listeners goes here
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
   <div id="main">
-    <h1>You're ready to use Parse!</h1>
-
-    <p>Read the documentation and start building your JavaScript app:</p>
-
-    <ul>
-      <li><a href="https://www.parse.com/docs/js_guide">Parse JavaScript Guide</a></li>
-      <li><a href="https://www.parse.com/docs/js">Parse JavaScript API Documentation</a></li>
-    </ul>
-
-    <div style="display:none" class="error">
-      Looks like there was a problem saving the test object. Make sure you've set your application ID and javascript key correctly in the call to <code>Parse.initialize</code> in this file.
-    </div>
+    
 <script type="text/javascript">
         
-    function loginToParse() {
-        Parse.User.logIn("harvey", "harvey", {
+    function loginToParse(username,password) {
+        Parse.User.logIn(username, password, {
           success: function(user) {
             // Do stuff after successful login.
           },
@@ -40,37 +52,57 @@
             // The login failed. Check error to see why.
           }
         });
-
     }
-</script>
-    <div style="display:none" class="success">
-      <button onclick="loginToParse()">Log in</button>
-      <a href="javascript:loginToParse()">login</a>
-      
+	function loginToFBThroughParse() {
+		Parse.FacebookUtils.logIn("user_likes,email", {
+		  success: function(user) {
+			// Handle successful login
+		  },
+		  error: function(user, error) {
+			// Handle errors and cancellation
+		  }
+		});
+	}
+	
+	function getPic() {
+		Parse.Cloud.run('getPic', {}, {
+		  success: function(result) {
+			$('#currentImage').attr('src',result.picUrl);
+			$('#currentImageId').text(result.picId);
+		  },
+		  error: function(error) {
+		  }
+		});
 
+	}
+	
+	function ratePic(decision) {
+		Parse.Cloud.run('submitRating', {picId:$('#currentImageId').text(), rating: decision}, {
+		  success: function(result) {
+		  
+		  },
+		  error: function(error) {
+		  }
+		});
+		getPic();
+	}
+
+</script>
+    <div>
+	<button onclick="#">Profile</button>
+	<button onclick="loginToFBThroughParse()">Login</button>
+	<br>
+	<div id="imageDiv"><img id="currentImage"><p style="display:none" id="currentImageId"/></div>
+    <button onclick="getPic()">GetPic</button>
+	<button onclick="ratePic('up')">Upvote</button>
+	<button onclick="ratePic('down')">Downvote</button>
+	
+	<script type="text/javascript">
+		getPic();
+	</script>
 
     </div>
   </div>
-
-  <script type="text/javascript">
-
-    
-    
-    var TestObject = Parse.Object.extend("Pictures");
-    var testObject = new TestObject();
-      testObject.save({
-          URL: "image.jpg",
-          owner: Parse.User.current(),
-          type: "cat"
-          }, {
-      success: function(object) {
-        $(".success").show();
-      },
-      error: function(model, error) {
-        $(".error").show();
-      }
-    });
-  </script>
 </body>
 
 </html>
