@@ -77,7 +77,7 @@
 	}
 	
 	function ratePic(decision) {
-		Parse.Cloud.run('submitRating', {picId:$('#currentImageId').val(), rating: decision}, {
+		Parse.Cloud.run('submitRating', {picId:$('#currentImageId').text(), rating: decision}, {
 		  success: function(result) {
 		  },
 		  error: function(error) {
@@ -88,9 +88,10 @@
 
 </script>
     <div>
+	<button onclick="#">Profile</button>
 	<button onclick="loginToFBThroughParse()">Login</button>
 	<br>
-	<div id="imageDiv"><img id="currentImage"><p id="currentImageId"/></div>
+	<div id="imageDiv"><img id="currentImage"><p style="display:none" id="currentImageId"/></div>
     <button onclick="getPic()">GetPic</button>
 	<button onclick="ratePic('up')">Upvote</button>
 	<button onclick="ratePic('down')">Downvote</button>
