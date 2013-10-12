@@ -18,40 +18,64 @@
 
 <body>
   <header class="page-title container">
-  <div class>
+  <div class="head">
     <h1 class="span6">LeaderBoard</h1>
   </div>
   </header>
+  <table class="table table-striped">
+	<tr>
+	  <td><p>Rank</p></td>
+	  <td><p>User</p></td>
+	  <td><p>Score</p></td>
+	</tr>
+  </table>
 
   <script type="text/javascript">
 	function getLeaders(length) {
-    var User = Parse.Object.extend("User");
-    var userQuery = new Parse.Query(User);
-    var Pictures = Parse.Object.extend("Pictures");
-    var picQuery = new Parse.Query(Pictures);
-	picQuery.equalTo("owner",objectId);
-	picQuery.find({
-      success: function(pics) {
-	    var ratings = {};
-	    for (var j=0; j<pics.length; j++) {
-	      var pic = pics[j];
-	  	  ratings{pic.get(owner)} += pics.get(rating)/pic.get(totalViews);
+      var User = Parse.Object.extend("User");
+      var userQuery = new Parse.Query(User);
+      var Pictures = Parse.Object.extend("Pictures");
+      var picQuery = new Parse.Query(Pictures);
+	  picQuery.find({
+        success: function(pics) {
+	      var ratings = {};
+	      for (var j=0; j<pics.length; j++) {
+	        var pic = pics[j];
+			var user = pic.get("owner");
+			if (user === null) continue;
+			var name = user.id;
+			if (ratings[name] === undefined) 
+	    	  ratings[name] = pic.get("rating")/pic.get("totalViews");
+			else 
+	    	  ratings[name] += pic.get("rating")/pic.get("totalViews");
+	      }
+	  	  var sorted = [];
+	  	  for (var key in ratings) {
+		    sorted.push({'username':key, 'score':ratings[key] });
+	  	  }
+	  	  sorted.sort(function(a,b) { return b.score-a.score;});
+	  	  dispLeaders(sorted.slice(0,length));
+	    },
+        error: function() {
+				 alert("No Picture found!");
 	    }
-		var sorted = [];
-		for (var key in ratings) {
-		sorted.push({'username':userQuery.get('objectId',key).get('username'),'value':ratings[key]});
-		}
-		sorted.sort(function(a,b) { return a.value-b.value;});
-		return sorted.slice(0,length);
-	  },
-      error: function() {
-	  }
-	});
+	  });
 	}
-  function dispLeaders() {
-	var leaders = getLeaders(5);
+  function dispLeaders(leaders) {
+	//var unsort = {"3":1.2,"2":2.3,"5":4.3};
+	//unsort[6] = unsort[6]===undefined?0:unsort[6]+5.0;
+	//console.log(unsort);
+	//var map = {"6":"efg","3":"abc","2":"cde","5":"opt"};
+	//var leaders = sortObj(unsort, map, 4);
+	//var leaders = [{"username":"abc","score":1.2},{"username":"cde","score":0.5},{"username":"opt","score":0.2}];
+	//var leaders = getLeaders(2);
+	//console.log(leaders);
+	for (var i=0; i<leaders.length; i++) {
+	  var entry = "<tr><td><p>" + (i+1) + "</p></td><td><p>" + leaders[i].username + "</p></td><td><p>" + leaders[i].score +"</p></td></tr>";
+	$("table").append(entry); 
+	}
   }
-
+window.onload=function() {getLeaders(5);};
   </script>
 </body>
 
