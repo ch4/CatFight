@@ -228,7 +228,7 @@
         });
         oppo.fetch({
             success: function(opponent) {
-                oppo.save({
+                opponent.save({
                     hasFight: true
                   }, {
                     success: function(object) {
@@ -237,7 +237,7 @@
                   }
                 });
             }
-        }
+        });
     }
   </script>
 </body>
