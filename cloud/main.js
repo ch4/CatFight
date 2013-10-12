@@ -71,9 +71,20 @@ Parse.Cloud.define("updateFight", function(request, response) {
     // The object was refreshed successfully.
 	//return myObject;
 	myObject.set("hasFight", status);
-		myObject.save().then(function () {
+		myObject.save(null, {
+		  success: function(gameScore) {
+			// Execute any logic that should take place after the object is saved.
+			//alert('New object created with objectId: ' + gameScore.id);
 			response.success("success");
-			});
+		  },
+		  error: function(gameScore, error) {
+			// Execute any logic that should take place if the save fails.
+			// error is a Parse.Error with an error code and description.
+			//alert('Failed to create new object, with error code: ' + error.description);
+		  }
+		});
+
+
 	},
 	error: function(myObject, error) {
 	// The object was not refreshed successfully.
