@@ -100,13 +100,13 @@
 
 </script>
 	<button id="profileBtn" onclick="window.location.href='profile.html'">Profile</button>
-	<button id="loginBtn" onclick="loginToFBThroughParse()">Login</button>
+	<button id="loginBtn" style="float:right;" onclick="loginToFBThroughParse()">Login</button>
 	<br>
 	<div id="imageDiv"><p style="display:none" id="currentImageId"/></div>
-    <button onclick="getPic()">GetPic</button>
+<!--     <button onclick="getPic()">GetPic</button> -->
 	<button onclick="ratePic('up')">Upvote</button>
 	<button onclick="ratePic('down')">Downvote</button>
-	
+	<iframe style="width:100%; height:100%" src="leaderboard.html" seamless>
 	<script type="text/javascript">
 		getPic();
 	</script>
