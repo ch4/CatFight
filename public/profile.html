@@ -226,17 +226,15 @@
             error: function(model, error) {
           }
         });
-        oppo.fetch({
-            success: function(opponent) {
-                opponent.save({
-                    hasFight: true
-                  }, {
-                    success: function(object) {
-                  },
-                    error: function(model, error) {
-                  }
-                });
-            }
+        updateFight(oppo, true);
+    }
+
+    function updateFight(opponent, status) {
+        Parse.Cloud.run('updateFight', {'opponent':opponent.id, 'status': status}, {
+          success: function(result) {
+          },
+          error: function(error) {
+          }
         });
     }
   </script>
