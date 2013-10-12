@@ -27,7 +27,7 @@ Parse.Cloud.define("getPic", function(request, response) {
 		//alert("Successfully retrieved " + results.length + " scores.");
 		// Do something with the returned Parse.Object values
 		//for (var i = 0; i < results.length; i++) { 
-		  var object = results[Math.floor((Math.random()*results.length));];
+		  var object = results[Math.floor((Math.random()*results.length))];
 		  payload = { "picId" : object.id, "picUrl" : object.get("URL") };
 		  console.log(result);
 		  response.success(payload);
