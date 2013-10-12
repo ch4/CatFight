@@ -45,6 +45,7 @@
 success: function(users) {
   var usernames = {};
   for (var k=0;k<users.length;k++) {
+    if (users[k].get("displayName") === undefined) continue;
     usernames[users[k].id] = users[k].get("displayName");
   }
   console.log(usernames);
@@ -90,6 +91,8 @@ error: function() { alert("No User found!");}
   function dispLeaders(sorted, length) {
 	var currUser = Parse.User.current().get("displayName");
 	for (var i=0; i<sorted.length; i++) {
+	  console.log(sorted[i].displayName);
+	  if (sorted[i].displayName === undefined) continue;
 	  if (sorted[i].displayName == currUser) {
 	    var entry = "<tr class=\"success\"><td><p>" + (i+1) + "</p></td><td><p><a href=profile>" + sorted[i].displayName + "</a></p></td><td><p>" + Number(sorted[i].score).toFixed(2) +"</p></td></tr>";
 	    $("table").append(entry); 
