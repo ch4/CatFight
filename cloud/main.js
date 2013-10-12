@@ -66,7 +66,16 @@ Parse.Cloud.define("updateFight", function(request, response) {
 	user.id = request.params.opponent;
 	
 
-	user.fetch().then(function (result) {
+	user.fetch({
+  success: function(myObject) {
+    // The object was refreshed successfully.
+	return myObject;
+  },
+  error: function(myObject, error) {
+    // The object was not refreshed successfully.
+    // error is a Parse.Error with an error code and description.
+  }
+}).then(function (result) {
 		result.set("hasFight", status);
 		result.save().then(function () {
 			response.success("success");
