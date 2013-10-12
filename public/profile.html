@@ -25,10 +25,10 @@
 	</ul>
   </div>
   <div id="fb-root"></div>
-<!--   <button onclick="window.location.href='index.html'">Home</button> -->
+
   <div id="main">
     <h1 style="display:table;margin-left: auto;margin-right: auto;">Meow Profile!</h1>
-
+    <button onclick="getFight()" style="display:table; margin-left: auto; margin-right: auto;">Start a match!</button>
     <div style="display:none" class="error">
       Looks like there was a problem saving the test object. Make sure you've set your application ID and javascript key correctly in the call to <code>Parse.initialize</code> in this file.
     </div>
@@ -165,6 +165,78 @@
             });
             $(".empty").hide();
             $("#main").append("<b>Successfully uploaded your choices.</b>");
+        }
+    }
+
+    function getFight() {
+        Parse.User.current().fetch ({
+            success: function(me) {
+                var elo = me.get('elo');
+                var hasFight = me.get('hasFight');
+                if(hasFight) {
+                    alert("You already have a fight.");
+                }
+                var Uxer = Parse.Object.extend("User");
+                var uxer = new Parse.Query(Uxer);
+                uxer.containedIn("elo", [elo-5, elo-4, elo-3, elo-2, elo-1, elo, elo+1, elo+2, elo+3, elo+4, elo+5]);
+                //uxer.lessThan("elo", elo+5);
+                //uxer.greaterThan("elo", elo-5);
+                uxer.limit(2);
+                uxer.find({
+                    success: function(object) {
+                        // Successfully retrieved the object.
+                        if (object[0].get('displayName') != me.get('displayName')) {
+                            var opponent = object[0];
+                            createFight(me, opponent);
+//alert("1 " + me.get('displayName') + " vs. " + opponent.get('displayName'));
+                        } else if (object.length == 2) {
+                            var opponent = object[1];
+                            createFight(me, opponent);
+//alert("2 " + me.get('displayName') + " vs. " + opponent.get('displayName'));
+                        } else {
+                            alert("No opponent found yet, please try again later.");
+                        }
+                    },
+                    error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
+            }
+        });
+        //query.containedIn("elo", [, , ]);
+    }
+
+    function createFight(me, oppo) {
+        var Fight = Parse.Object.extend("Fights");
+        var fight = new Fight();
+        fight.save({
+            UserA: me,
+            UserB: oppo
+          }, {
+            success: function(object) {
+          },
+            error: function(model, error) {
+          }
+        });
+        me.save({
+            hasFight: true
+          }, {
+            success: function(object) {
+          },
+            error: function(model, error) {
+          }
+        });
+        oppo.fetch({
+            success: function(opponent) {
+                oppo.save({
+                    hasFight: true
+                  }, {
+                    success: function(object) {
+                  },
+                    error: function(model, error) {
+                  }
+                });
+            }
         }
     }
   </script>
