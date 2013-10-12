@@ -59,7 +59,7 @@ Parse.Cloud.define("submitRating", function(request, response) {
 });
 
 Parse.Cloud.define("fight", function(request, response) {
-	var user = request.params.user;
+	var user = request.object.get("User");
 
 	var query;
 	query = new Parse.Query("Users");
