@@ -19,6 +19,13 @@
 </head>
 
 <body onload="getPic()">
+<div class="nav">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a href="#">Home</a></li>
+	  <li><a href="redirectLogin()">Profile</a></li>
+	  <li><a href="leaderboard.html">Leaderboard</a></li>
+	</ul>
+  </div>
   <div id="fb-root"></div>
 <script>
 	$(document).ready(function() {
@@ -30,6 +37,18 @@
 			// show the signup or login page
 		}
 	});
+	
+	function redirectLogin(){
+		var currentUser = Parse.User.current();
+		if (currentUser) {
+			// do stuff with the user
+			window.location.href="profile.html";
+		} else {
+			// show the signup or login page
+			loginToFBThroughParse();
+		}
+		
+	}
 	
 	
   window.fbAsyncInit = function() {
@@ -92,8 +111,8 @@
 	}
 
 </script>
-	<button id="profileBtn" onclick="window.location.href='profile.html'" class="btn btn-default">Profile</button>
-	<button id="loginBtn" style="float:right;" onclick="loginToFBThroughParse()" class="btn btn-default">Login</button>
+<!-- 	<button id="profileBtn" onclick="window.location.href='profile.html'" class="btn btn-default">Profile</button>
+	<button id="loginBtn" style="float:right;" onclick="loginToFBThroughParse()" class="btn btn-default">Login</button> -->
 	<br>
 	<div id="imageDiv" ><p style="display:none" id="currentImageId"/></div>
 
@@ -101,7 +120,7 @@
 		<button onclick="ratePic('up')" class="btn btn-default">Upvote</button>
 		<button onclick="ratePic('down')" class="btn btn-default">Downvote</button>
 	</div>
-	<iframe style="width:100%; height:100%" src="leaderboard.html" seamless>
+	<!-- <iframe style="width:100%; height:100%" src="leaderboard.html" seamless> -->
   </div>
 </body>
 
