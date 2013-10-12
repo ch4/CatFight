@@ -72,8 +72,6 @@ Parse.Cloud.define("updateFight", function(request, response) {
 	});
 });
 
-	
-});
 
 Parse.Cloud.define("fight", function(request, response) {
 	var user = request.object.get("User");
